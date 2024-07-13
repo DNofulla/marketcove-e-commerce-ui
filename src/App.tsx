@@ -1,13 +1,22 @@
-function App() {
-  const title = import.meta.env.VITE_APP_TITLE;
-  const stripeKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
+import React from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+// import ProtectedRoute from "./components/auth/ProtectedRoute";
+// import Dashboard from "./components/dashboard/Dashboard";
+import Signup from "./components/auth/signup/Signup";
+import Home from "./components/home/Home";
+import Login from "./components/auth/login/Login";
 
+const App: React.FC = () => {
   return (
-    <div>
-      <h1>{title}</h1>
-      <p>Stripe Key: {stripeKey}</p>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        {/* <ProtectedRoute path="/dashboard" element={<Dashboard />} /> */}
+      </Routes>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;

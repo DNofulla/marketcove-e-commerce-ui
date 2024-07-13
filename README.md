@@ -1,5 +1,11 @@
 ### MarketCove E-Commerce Platform UI
 
+
+<div align="center">
+	<img src="./src/assets/MarketCoveFullVertical.png" alt="MarketCove E-Commerce Platform" />	
+</div>
+
+
 Environment Setup before running:
 - Create a `.env` file in the root directory
 - Fill it with the following fields:
