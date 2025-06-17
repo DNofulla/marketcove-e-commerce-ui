@@ -323,14 +323,6 @@ The authentication service is configured to connect to `http://localhost:8080/ap
 - Maintain responsive design with `sm:`, `md:`, `lg:` prefixes
 - Use consistent spacing and color schemes
 
-## 🤝 Contributing
-
-1. Follow the established file structure
-2. Maintain TypeScript strict mode compliance
-3. Add proper error handling for all API calls
-4. Include loading states for user interactions
-5. Test all authentication flows before submitting
-
 ## 📄 License
 
 This project is part of the MarketCove E-Commerce Platform suite. See LICENSE file for details.
