@@ -1,0 +1,394 @@
+openapi: 3.0.1
+info:
+  title: MarketCove E-Commerce API
+  description: "REST API for MarketCove E-Commerce platform supporting multi-role\
+    \ user management, authentication, and business operations"
+  contact:
+    name: MarketCove Development Team
+    email: developer@marketcove.com
+  license:
+    name: Private License
+  version: 1.0.0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+security:
+- Bearer Authentication: []
+tags:
+- name: Authentication
+  description: User authentication and account management endpoints
+paths:
+  /api/auth/reset-password:
+    post:
+      tags:
+      - Authentication
+      operationId: resetPassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConfirmPasswordResetRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/auth/register:
+    post:
+      tags:
+      - Authentication
+      summary: Register a new user
+      description: "Create a new user account with email, password, and role"
+      operationId: register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterRequest"
+        required: true
+      responses:
+        "400":
+          description: Invalid registration data or email already exists
+          content:
+            '*/*':
+              example:
+                error: Email already registered
+        "500":
+          description: Internal server error
+          content:
+            '*/*':
+              schema:
+                type: object
+        "200":
+          description: User registered successfully
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/AuthenticationResponse"
+  /api/auth/refresh-token:
+    post:
+      tags:
+      - Authentication
+      summary: Refresh access token
+      description: Generate new access token using refresh token
+      operationId: refreshToken
+      responses:
+        "400":
+          description: Missing or invalid refresh token
+          content:
+            '*/*':
+              schema:
+                type: object
+        "200":
+          description: Token refreshed successfully
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/AuthenticationResponse"
+        "500":
+          description: Internal server error
+          content:
+            '*/*':
+              schema:
+                type: object
+        "401":
+          description: Refresh token expired or invalid
+          content:
+            '*/*':
+              schema:
+                type: object
+      security:
+      - Bearer Authentication: []
+  /api/auth/login:
+    post:
+      tags:
+      - Authentication
+      summary: User login
+      description: Authenticate user with email and password
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+        required: true
+      responses:
+        "401":
+          description: Invalid credentials
+          content:
+            '*/*':
+              example:
+                error: Invalid email or password
+        "500":
+          description: Internal server error
+          content:
+            '*/*':
+              schema:
+                type: object
+        "200":
+          description: Login successful
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/AuthenticationResponse"
+  /api/auth/forgot-password:
+    post:
+      tags:
+      - Authentication
+      operationId: forgotPassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PasswordResetRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/auth/verify-email:
+    get:
+      tags:
+      - Authentication
+      operationId: verifyEmail
+      parameters:
+      - name: token
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/auth/stats:
+    get:
+      tags:
+      - Authentication
+      operationId: getUserStats
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/auth/health:
+    get:
+      tags:
+      - Authentication
+      operationId: health
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/auth/check-email:
+    get:
+      tags:
+      - Authentication
+      operationId: checkEmail
+      parameters:
+      - name: email
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+components:
+  schemas:
+    ConfirmPasswordResetRequest:
+      required:
+      - confirmPassword
+      - newPassword
+      - token
+      type: object
+      properties:
+        token:
+          type: string
+        newPassword:
+          maxLength: 2147483647
+          minLength: 8
+          type: string
+        confirmPassword:
+          type: string
+        passwordMatching:
+          type: boolean
+    RegisterRequest:
+      required:
+      - confirmPassword
+      - email
+      - firstName
+      - lastName
+      - password
+      - role
+      type: object
+      properties:
+        firstName:
+          maxLength: 50
+          minLength: 2
+          type: string
+        lastName:
+          maxLength: 50
+          minLength: 2
+          type: string
+        email:
+          type: string
+        password:
+          maxLength: 2147483647
+          minLength: 8
+          type: string
+        confirmPassword:
+          type: string
+        phoneNumber:
+          type: string
+        role:
+          type: string
+          enum:
+          - CUSTOMER
+          - SELLER
+          - BUSINESS_OWNER
+          - ADMIN
+        businessName:
+          type: string
+        businessDescription:
+          type: string
+        businessEmail:
+          type: string
+        businessPhone:
+          type: string
+        businessRegistrationNumber:
+          type: string
+        taxId:
+          type: string
+        businessAddress:
+          type: string
+        businessCity:
+          type: string
+        businessState:
+          type: string
+        businessPostalCode:
+          type: string
+        businessCountry:
+          type: string
+        websiteUrl:
+          type: string
+        shopName:
+          type: string
+        shopDescription:
+          type: string
+        contactEmail:
+          type: string
+        contactPhone:
+          type: string
+        address:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        postalCode:
+          type: string
+        country:
+          type: string
+        bankAccountInfo:
+          type: string
+        passwordMatching:
+          type: boolean
+    AuthenticationResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type: string
+        tokenType:
+          type: string
+        expiresIn:
+          type: integer
+          format: int64
+        refreshExpiresIn:
+          type: integer
+          format: int64
+        user:
+          $ref: "#/components/schemas/UserInfo"
+    UserInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        phoneNumber:
+          type: string
+        role:
+          type: string
+          enum:
+          - CUSTOMER
+          - SELLER
+          - BUSINESS_OWNER
+          - ADMIN
+        lastLogin:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        profileId:
+          type: integer
+          format: int64
+        profileName:
+          type: string
+        profileVerified:
+          type: boolean
+        emailVerified:
+          type: boolean
+        accountLocked:
+          type: boolean
+    LoginRequest:
+      required:
+      - email
+      - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+        rememberMe:
+          type: boolean
+    PasswordResetRequest:
+      required:
+      - email
+      type: object
+      properties:
+        email:
+          type: string
+  securitySchemes:
+    Bearer Authentication:
+      type: http
+      description: Enter JWT token (without 'Bearer ' prefix)
+      scheme: bearer
+      bearerFormat: JWT
