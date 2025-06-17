@@ -325,9 +325,4 @@ The authentication service is configured to connect to `http://localhost:8080/ap
 
 ## 📄 License
 
-This project is part of the MarketCove E-Commerce Platform suite. See LICENSE file for details.
-
----
-
-**Built with ❤️ for MarketCove E-Commerce Platform**
-
+This project is licensed under the MIT License.
